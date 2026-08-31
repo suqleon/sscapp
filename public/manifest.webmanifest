@@ -1,0 +1,11 @@
+{
+  "name": "Shark Swimming Club",
+  "short_name": "Shark Club",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F2F8FD",
+  "theme_color": "#07254F",
+  "icons": [
+    { "src": "/shark-logo.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
