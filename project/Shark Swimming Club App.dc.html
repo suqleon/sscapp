@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" rx="22" fill="#07336b"/>
+  <path d="M50 26c14 10 22 19 22 31a22 22 0 0 1-44 0c0-12 8-21 22-31Z" fill="#16B5F7"/>
+  <path d="M28 64c5 3 9 3 14 0s9-3 14 0 9 3 14 0" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+</svg>
+</template>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  ::-webkit-scrollbar { display: none; }
+  @keyframes scfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+</style>
+</helmet>
+
+<div style="--accent: {{ accent }}; min-width: 100%; min-height: 100vh; width: max-content; box-sizing: border-box; padding: 56px 56px 80px; background: radial-gradient(120% 120% at 0% 0%, #e3edf6 0%, #cdd9e6 60%, #bccddd 100%); font-family: 'Plus Jakarta Sans', sans-serif;">
+
+  <!-- ===================== EDITOR DEL DUEÑO ===================== -->
+  <div onClick="{{ toggleEdit }}" style="position: fixed; top: 20px; right: 20px; z-index: 100; display: flex; align-items: center; gap: 9px; background: #07254F; color: #fff; padding: 12px 18px; border-radius: 999px; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 12px 28px -8px rgba(7,37,79,0.6);">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+    Editor del due&ntilde;o
+  </div>
+
+  <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; width: 340px; z-index: 101; background: #fff; box-shadow: -12px 0 40px -10px rgba(7,37,79,0.25); display: flex; flex-direction: column; font-family: 'Plus Jakarta Sans', sans-serif;">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 20px 22px; border-bottom: 1px solid #EAF1F8;">
+        <div style="display: flex; align-items: center; gap: 11px;">
+          <div style="width: 36px; height: 36px; border-radius: 11px; background: var(--accent, #FF6A3D); display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+          <div><div style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px; color: #07254F;">Editor del due&ntilde;o</div><div style="font-size: 11px; color: #9fb3c8; font-weight: 600;">Los cambios se aplican en vivo</div></div>
+        </div>
+        <div onClick="{{ toggleEdit }}" style="width: 32px; height: 32px; border-radius: 9px; background: #F2F8FD; display: flex; align-items: center; justify-content: center; cursor: pointer;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#07254F" stroke-width="2.2"><path d="M18 6 6 18M6 6l12 12"/></svg></div>
+      </div>
+
+      <div style="flex: 1; overflow-y: auto; padding: 16px 22px 32px;">
+
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent, #FF6A3D); margin: 4px 0 12px;">Marca y estilo</div>
+        <div style="display: flex; align-items: center; gap: 13px; margin-bottom: 6px;">
+          <input type="color" value="{{ accent }}" onInput="{{ h.accent }}" style="width: 48px; height: 48px; border: none; border-radius: 12px; background: none; cursor: pointer; padding: 0;">
+          <div><div style="font-size: 13px; font-weight: 700; color: #07254F;">Color de acento</div><div style="font-size: 11px; color: #9fb3c8;">Botones, resaltados y marca</div></div>
+        </div>
+
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent, #FF6A3D); margin: 22px 0 12px;">Cliente</div>
+        <div style="margin-bottom: 13px;">
+          <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Nombre del cliente</div>
+          <input type="text" value="{{ clientName }}" onInput="{{ h.clientName }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+        </div>
+
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent, #FF6A3D); margin: 22px 0 12px;">Nadador</div>
+        <div style="margin-bottom: 13px;">
+          <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Nombre del nadador</div>
+          <input type="text" value="{{ swimmerName }}" onInput="{{ h.swimmerName }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+        </div>
+        <div style="display: flex; gap: 12px; margin-bottom: 13px;">
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Edad</div>
+            <input type="text" value="{{ swimmerAge }}" onInput="{{ h.swimmerAge }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+          </div>
+          <div style="flex: 1.4;">
+            <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Nivel</div>
+            <input type="text" value="{{ level }}" onInput="{{ h.level }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+          </div>
+        </div>
+
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent, #FF6A3D); margin: 22px 0 12px;">Pr&oacute;xima clase</div>
+        <div style="margin-bottom: 13px;">
+          <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Instructor / coach</div>
+          <input type="text" value="{{ coach }}" onInput="{{ h.coach }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+        </div>
+        <div style="display: flex; gap: 12px; margin-bottom: 13px;">
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Hora</div>
+            <input type="text" value="{{ classTime }}" onInput="{{ h.classTime }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+          </div>
+          <div style="flex: 1;">
+            <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Carril</div>
+            <input type="text" value="{{ lane }}" onInput="{{ h.lane }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+          </div>
+        </div>
+        <div style="margin-bottom: 13px;">
+          <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Alberca</div>
+          <input type="text" value="{{ pool }}" onInput="{{ h.pool }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+        </div>
+
+        <div style="font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent, #FF6A3D); margin: 22px 0 12px;">Membres&iacute;a</div>
+        <div style="margin-bottom: 13px;">
+          <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Plan</div>
+          <input type="text" value="{{ plan }}" onInput="{{ h.plan }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+        </div>
+        <div style="margin-bottom: 13px;">
+          <div style="font-size: 12px; font-weight: 700; color: #486a8c; margin-bottom: 6px;">Precio mensual</div>
+          <input type="text" value="{{ price }}" onInput="{{ h.price }}" style="width: 100%; box-sizing: border-box; padding: 11px 13px; border: 1.5px solid #dce6f0; border-radius: 11px; font-size: 14px; color: #07254F; font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; outline: none;">
+        </div>
+
+        <div onClick="{{ reset }}" style="margin-top: 20px; text-align: center; padding: 12px; border: 1.5px solid #E1ECF6; border-radius: 12px; font-weight: 700; font-size: 13px; color: #486a8c; cursor: pointer;">Restablecer valores</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- TITLE BLOCK -->
+  <div style="display: flex; align-items: center; gap: 18px; margin-bottom: 8px;">
+    <img src="assets/shark-fin.png" alt="Shark" style="height: 52px; width: auto;">
+    <div>
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 30px; color: #032D5E; letter-spacing: -0.02em;">Shark Swimming Club &middot; App</div>
+      <div style="font-size: 14px; color: #486a8c; font-weight: 600; margin-top: 2px;">Aplicaci&oacute;n m&oacute;vil para clientes, instructores y administraci&oacute;n &mdash; espa&ntilde;ol</div>
+    </div>
+  </div>
+  <div style="display: flex; gap: 8px; margin: 18px 0 40px; flex-wrap: wrap;">
+    <span style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #03366c; background: #ffffff; border: 1px solid #d4e1ee; padding: 7px 13px; border-radius: 999px;">9 PANTALLAS</span>
+    <span style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #03366c; background: #ffffff; border: 1px solid #d4e1ee; padding: 7px 13px; border-radius: 999px;">RESERVAS &middot; PAGOS &middot; PROGRESO</span>
+    <span style="font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; color: #ffffff; background: var(--accent, #FF6A3D); padding: 7px 13px; border-radius: 999px;">SEGURIDAD REFORZADA</span>
+  </div>
+
+  <!-- ===================== ROW 1 ===================== -->
+  <div style="display: flex; gap: 44px; align-items: flex-start; margin-bottom: 56px;">
+
+    <!-- ============ 01 LOGIN ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">01 &middot; Acceso seguro</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F4FAFE; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <!-- notch -->
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <!-- status bar dark -->
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity="0.35"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; display: flex; flex-direction: column; padding: 20px 30px 0;">
+            <div style="display: flex; flex-direction: column; align-items: center; margin-top: 26px;">
+              <img src="assets/shark-logo.png" alt="Shark Swimming Club" style="width: 168px; height: auto;">
+            </div>
+            <div style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 25px; color: #07254F; text-align: center; margin-top: 26px; letter-spacing: -0.02em;">Bienvenido de nuevo</div>
+            <div style="font-size: 13.5px; color: #6E8AAA; text-align: center; margin-top: 6px;">Ingresa para gestionar tus clases</div>
+
+            <!-- email -->
+            <div style="margin-top: 26px;">
+              <label style="font-size: 12px; font-weight: 700; color: #07254F;">Correo</label>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; background: #ffffff; border: 1.5px solid #E1ECF6; border-radius: 15px; padding: 14px 16px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m3 7 9 6 9-6"/></svg>
+                <span style="font-size: 14px; color: #2c4b6f; font-weight: 500;">ana.torres@email.com</span>
+              </div>
+            </div>
+            <!-- password -->
+            <div style="margin-top: 16px;">
+              <label style="font-size: 12px; font-weight: 700; color: #07254F;">Contrase&ntilde;a</label>
+              <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px; background: #ffffff; border: 1.5px solid #E1ECF6; border-radius: 15px; padding: 14px 16px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                <span style="flex: 1; font-size: 16px; color: #2c4b6f; letter-spacing: 3px;">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#6E8AAA" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+              </div>
+            </div>
+            <div style="text-align: right; margin-top: 12px; font-size: 12.5px; font-weight: 700; color: #0073CC;">&iquest;Olvidaste tu contrase&ntilde;a?</div>
+
+            <!-- primary -->
+            <div style="margin-top: 22px; background: linear-gradient(135deg, #0a3e7e, #0073CC); color: #fff; text-align: center; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 16px; padding: 17px; border-radius: 16px; box-shadow: 0 14px 24px -10px rgba(0,115,204,0.7);">Iniciar sesi&oacute;n</div>
+
+            <div style="display: flex; align-items: center; gap: 12px; margin: 20px 0;">
+              <div style="flex: 1; height: 1px; background: #E1ECF6;"></div>
+              <span style="font-size: 12px; color: #9fb3c8; font-weight: 600;">o contin&uacute;a con</span>
+              <div style="flex: 1; height: 1px; background: #E1ECF6;"></div>
+            </div>
+            <!-- biometric -->
+            <div style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; border: 1.5px solid #E1ECF6; border-radius: 16px; padding: 15px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #FF6A3D)" stroke-width="2" stroke-linecap="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.5.5 3.5-1 5"/><path d="M5 13a7 7 0 0 1 12-5"/><path d="M3 9a10 10 0 0 1 18 0"/><path d="M9 18.5c1-1 1-3 1-4.5a2 2 0 0 1 4 0c0 1 0 2 .5 3"/></svg>
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">Face ID / Huella</span>
+            </div>
+
+            <div style="flex: 1;"></div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 7px; padding: 18px 0 26px; color: #6E8AAA;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5Z"/><path d="m9 12 2 2 4-4"/></svg>
+              <span style="font-size: 12px; font-weight: 600;">Conexi&oacute;n cifrada de extremo a extremo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 02 INICIO ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">02 &middot; Inicio</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 14px 22px 0;">
+            <!-- header -->
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 46px; height: 46px; border-radius: 15px; background: linear-gradient(135deg, #16B5F7, #0073CC); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 18px;">A</div>
+                <div>
+                  <div style="font-size: 13px; color: #6E8AAA; font-weight: 600;">Hola,</div>
+                  <div style="font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 19px; color: #07254F; letter-spacing: -0.02em;">{{ clientName }}</div>
+                </div>
+              </div>
+              <div style="position: relative; width: 44px; height: 44px; border-radius: 14px; background: #ffffff; border: 1px solid #E7EFF7; display: flex; align-items: center; justify-content: center;">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#07254F" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                <span style="position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; background: var(--accent, #FF6A3D); border-radius: 50%; border: 2px solid #fff;"></span>
+              </div>
+            </div>
+
+            <!-- next class hero -->
+            <div style="position: relative; margin-top: 18px; border-radius: 24px; overflow: hidden; background: linear-gradient(135deg, #07336b 0%, #0073CC 70%, #16B5F7 130%); padding: 20px; box-shadow: 0 18px 30px -16px rgba(0,115,204,0.65);">
+              <img src="assets/shark-fin.png" alt="" style="position: absolute; right: -18px; bottom: -10px; width: 150px; opacity: 0.16;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #bfe6ff; text-transform: uppercase;">Pr&oacute;xima clase</span>
+                <span style="font-size: 11px; font-weight: 700; color: #07254F; background: #16B5F7; padding: 4px 10px; border-radius: 999px;">HOY</span>
+              </div>
+              <div style="font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 23px; color: #fff; margin-top: 12px; letter-spacing: -0.02em;">Nivel {{ level }}</div>
+              <div style="font-size: 13px; color: #cfe8ff; margin-top: 3px;">Nadador: {{ swimmerName }} &middot; Carril {{ lane }}</div>
+              <div style="display: flex; gap: 18px; margin-top: 16px;">
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#bfe6ff" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                  <span style="font-size: 13.5px; color: #fff; font-weight: 600;">{{ classTime }}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 7px;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#bfe6ff" stroke-width="2"><circle cx="12" cy="9" r="3"/><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Z"/></svg>
+                  <span style="font-size: 13.5px; color: #fff; font-weight: 600;">{{ pool }}</span>
+                </div>
+              </div>
+              <div style="margin-top: 16px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.14); border-radius: 13px; padding: 10px 14px;">
+                <div style="display: flex; align-items: center; gap: 9px;">
+                  <div style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,#ffd0c0,#FF6A3D); display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;font-family:'Outfit',sans-serif;">D</div>
+                  <span style="font-size: 13px; color: #fff; font-weight: 600;">Coach {{ coach }}</span>
+                </div>
+                <span style="font-size: 12.5px; font-weight: 700; color: #fff;">Ver detalles &rsaquo;</span>
+              </div>
+            </div>
+
+            <!-- quick actions -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px;">
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                <div style="width: 100%; aspect-ratio: 1; border-radius: 17px; background: var(--accent, #FF6A3D); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 16px -8px rgba(255,106,61,0.7);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"/></svg></div>
+                <span style="font-size: 11px; font-weight: 700; color: #07254F;">Reservar</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                <div style="width: 100%; aspect-ratio: 1; border-radius: 17px; background: #ffffff; border: 1px solid #E7EFF7; display: flex; align-items: center; justify-content: center;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg></div>
+                <span style="font-size: 11px; font-weight: 700; color: #07254F;">Pagar</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                <div style="width: 100%; aspect-ratio: 1; border-radius: 17px; background: #ffffff; border: 1px solid #E7EFF7; display: flex; align-items: center; justify-content: center;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+                <span style="font-size: 11px; font-weight: 700; color: #07254F;">Asistencia</span>
+              </div>
+              <div style="display: flex; flex-direction: column; align-items: center; gap: 7px;">
+                <div style="width: 100%; aspect-ratio: 1; border-radius: 17px; background: #ffffff; border: 1px solid #E7EFF7; display: flex; align-items: center; justify-content: center;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <span style="font-size: 11px; font-weight: 700; color: #07254F;">Mensajes</span>
+              </div>
+            </div>
+
+            <!-- progress mini -->
+            <div style="display: flex; align-items: center; gap: 16px; margin-top: 18px; background: #ffffff; border: 1px solid #E7EFF7; border-radius: 20px; padding: 16px;">
+              <div style="position: relative; width: 60px; height: 60px; border-radius: 50%; background: conic-gradient(var(--accent, #FF6A3D) 0% 75%, #EAF1F8 75% 100%); display: flex; align-items: center; justify-content: center;">
+                <div style="width: 46px; height: 46px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 15px; color: #07254F;">75%</div>
+              </div>
+              <div style="flex: 1;">
+                <div style="font-family: 'Outfit',sans-serif; font-weight: 700; font-size: 15px; color: #07254F;">Progreso de {{ swimmerName }}</div>
+                <div style="font-size: 12.5px; color: #6E8AAA; margin-top: 2px;">3 de 4 clases esta semana</div>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+          </div>
+
+          <!-- bottom nav -->
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 700;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 600;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 03 RESERVAR ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">03 &middot; Reservar clase</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <!-- header -->
+            <div style="display: flex; align-items: center; gap: 14px; padding: 8px 0 6px;">
+              <div style="width: 40px; height: 40px; border-radius: 13px; background: #fff; border: 1px solid #E7EFF7; display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#07254F" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg></div>
+              <div style="font-family: 'Outfit',sans-serif; font-weight: 800; font-size: 21px; color: #07254F; letter-spacing: -0.02em;">Reservar clase</div>
+            </div>
+
+            <div style="font-size: 13px; font-weight: 700; color: #07254F; margin: 14px 0 10px;">Junio 2026</div>
+            <!-- day selector -->
+            <div style="display: flex; gap: 8px;">
+              <div style="flex: 1; text-align: center; padding: 11px 0; border-radius: 14px; background: #fff; border: 1px solid #E7EFF7;"><div style="font-size: 11px; color: #6E8AAA; font-weight: 600;">LUN</div><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 17px; color: #07254F; margin-top: 3px;">15</div></div>
+              <div style="flex: 1; text-align: center; padding: 11px 0; border-radius: 14px; background: linear-gradient(135deg,#0a3e7e,#0073CC); box-shadow: 0 10px 18px -8px rgba(0,115,204,0.7);"><div style="font-size: 11px; color: #bfe6ff; font-weight: 700;">MAR</div><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 17px; color: #fff; margin-top: 3px;">16</div></div>
+              <div style="flex: 1; text-align: center; padding: 11px 0; border-radius: 14px; background: #fff; border: 1px solid #E7EFF7;"><div style="font-size: 11px; color: #6E8AAA; font-weight: 600;">MI&Eacute;</div><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 17px; color: #07254F; margin-top: 3px;">17</div></div>
+              <div style="flex: 1; text-align: center; padding: 11px 0; border-radius: 14px; background: #fff; border: 1px solid #E7EFF7;"><div style="font-size: 11px; color: #6E8AAA; font-weight: 600;">JUE</div><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 17px; color: #07254F; margin-top: 3px;">18</div></div>
+              <div style="flex: 1; text-align: center; padding: 11px 0; border-radius: 14px; background: #fff; border: 1px solid #E7EFF7;"><div style="font-size: 11px; color: #6E8AAA; font-weight: 600;">VIE</div><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 17px; color: #07254F; margin-top: 3px;">19</div></div>
+            </div>
+
+            <div style="font-size: 13px; font-weight: 700; color: #07254F; margin: 20px 0 10px;">Horarios disponibles</div>
+
+            <!-- slot selected -->
+            <div style="border: 2px solid #0073CC; background: #EAF4FE; border-radius: 18px; padding: 15px; display: flex; align-items: center; gap: 14px; box-shadow: 0 12px 22px -14px rgba(0,115,204,0.6);">
+              <div style="text-align: center;"><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 18px; color: #0073CC;">9:00</div><div style="font-size: 10px; color: #6E8AAA; font-weight: 700;">AM</div></div>
+              <div style="width: 1px; height: 38px; background: #cfe0f0;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">{{ level }} &middot; Crol</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 2px;">Coach {{ coach }} &middot; 4 lugares</div></div>
+              <div style="width: 26px; height: 26px; border-radius: 50%; background: #0073CC; display: flex; align-items: center; justify-content: center;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M5 12l5 5 9-11"/></svg></div>
+            </div>
+            <!-- slots -->
+            <div style="border: 1px solid #E7EFF7; background: #fff; border-radius: 18px; padding: 15px; display: flex; align-items: center; gap: 14px; margin-top: 10px;">
+              <div style="text-align: center;"><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 18px; color: #07254F;">11:00</div><div style="font-size: 10px; color: #6E8AAA; font-weight: 700;">AM</div></div>
+              <div style="width: 1px; height: 38px; background: #EAF1F8;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">{{ level }} &middot; Respiraci&oacute;n</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 2px;">Coach Mario &middot; 2 lugares</div></div>
+              <span style="font-size: 11px; font-weight: 700; color: #18B57A; background: #E4F7EF; padding: 5px 10px; border-radius: 999px;">Libre</span>
+            </div>
+            <div style="border: 1px solid #E7EFF7; background: #fff; border-radius: 18px; padding: 15px; display: flex; align-items: center; gap: 14px; margin-top: 10px; opacity: 0.55;">
+              <div style="text-align: center;"><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 18px; color: #07254F;">5:00</div><div style="font-size: 10px; color: #6E8AAA; font-weight: 700;">PM</div></div>
+              <div style="width: 1px; height: 38px; background: #EAF1F8;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">{{ level }} &middot; Espalda</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 2px;">Coach {{ coach }}</div></div>
+              <span style="font-size: 11px; font-weight: 700; color: #9fb3c8; background: #EEF3F8; padding: 5px 10px; border-radius: 999px;">Lleno</span>
+            </div>
+
+            <div style="margin-top: 18px; background: var(--accent, #FF6A3D); color: #fff; text-align: center; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 16px; padding: 17px; border-radius: 16px; box-shadow: 0 14px 22px -10px rgba(255,106,61,0.7);">Confirmar reserva &middot; 9:00 AM</div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 600;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 700;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== ROW 2 ===================== -->
+  <div style="display: flex; gap: 44px; align-items: flex-start; margin-bottom: 56px;">
+
+    <!-- ============ 04 HORARIO ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">04 &middot; Horario semanal</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0 6px;">
+              <div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 21px; color: #07254F; letter-spacing: -0.02em;">Horario</div>
+              <div style="display: flex; background: #E8F0F8; border-radius: 12px; padding: 3px;">
+                <span style="font-size: 12px; font-weight: 700; color: #fff; background: #0073CC; padding: 6px 14px; border-radius: 9px;">Semana</span>
+                <span style="font-size: 12px; font-weight: 700; color: #6E8AAA; padding: 6px 14px;">Mes</span>
+              </div>
+            </div>
+
+            <!-- MARTES -->
+            <div style="display: flex; align-items: center; gap: 10px; margin: 16px 0 10px;">
+              <span style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 14px; color: #07254F;">Martes 16</span>
+              <span style="font-size: 10px; font-weight: 700; color: var(--accent,#FF6A3D); background: rgba(255,106,61,0.12); padding: 3px 9px; border-radius: 999px;">HOY</span>
+              <div style="flex: 1; height: 1px; background: #E7EFF7;"></div>
+            </div>
+            <div style="display: flex; gap: 12px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px; margin-bottom: 9px;">
+              <div style="width: 4px; border-radius: 4px; background: #16B5F7;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14px; color: #07254F;">{{ level }} &middot; Crol</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px;">{{ classTime }} &middot; Coach {{ coach }} &middot; Carril {{ lane }}</div></div>
+              <span style="align-self: center; font-size: 10.5px; font-weight: 700; color: #0073CC; background: #E8F2FD; padding: 5px 9px; border-radius: 999px;">Reservado</span>
+            </div>
+
+            <!-- MIERCOLES -->
+            <div style="display: flex; align-items: center; gap: 10px; margin: 16px 0 10px;">
+              <span style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 14px; color: #07254F;">Mi&eacute;rcoles 17</span>
+              <div style="flex: 1; height: 1px; background: #E7EFF7;"></div>
+            </div>
+            <div style="display: flex; gap: 12px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px; margin-bottom: 9px;">
+              <div style="width: 4px; border-radius: 4px; background: #18B57A;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14px; color: #07254F;">Acondicionamiento</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px;">9:00 AM &middot; Coach Mario</div></div>
+              <span style="align-self: center; font-size: 10.5px; font-weight: 700; color: #18B57A; background: #E4F7EF; padding: 5px 9px; border-radius: 999px;">Disponible</span>
+            </div>
+
+            <!-- JUEVES -->
+            <div style="display: flex; align-items: center; gap: 10px; margin: 16px 0 10px;">
+              <span style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 14px; color: #07254F;">Jueves 18</span>
+              <div style="flex: 1; height: 1px; background: #E7EFF7;"></div>
+            </div>
+            <div style="display: flex; gap: 12px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px; margin-bottom: 9px;">
+              <div style="width: 4px; border-radius: 4px; background: #16B5F7;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14px; color: #07254F;">{{ level }} &middot; Espalda</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px;">{{ classTime }} &middot; Coach {{ coach }} &middot; Carril {{ lane }}</div></div>
+              <span style="align-self: center; font-size: 10.5px; font-weight: 700; color: #0073CC; background: #E8F2FD; padding: 5px 9px; border-radius: 999px;">Reservado</span>
+            </div>
+            <div style="display: flex; gap: 12px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px;">
+              <div style="width: 4px; border-radius: 4px; background: #F5A623;"></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14px; color: #07254F;">Evaluaci&oacute;n de nivel</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px;">6:30 PM &middot; Coach {{ coach }}</div></div>
+              <span style="align-self: center; font-size: 10.5px; font-weight: 700; color: #C77A0A; background: #FDF1DD; padding: 5px 9px; border-radius: 999px;">Especial</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 600;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 700;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 05 PROGRESO ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">05 &middot; Progreso y niveles</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 21px; color: #07254F; letter-spacing: -0.02em; padding: 8px 0 0;">Progreso de {{ swimmerName }}</div>
+
+            <!-- level hero -->
+            <div style="position: relative; margin-top: 16px; border-radius: 24px; overflow: hidden; background: linear-gradient(135deg, #07336b, #0073CC 75%, #16B5F7); padding: 20px; display: flex; align-items: center; gap: 18px;">
+              <img src="assets/shark-fin.png" alt="" style="position: absolute; right: -16px; top: -8px; width: 120px; opacity: 0.18;">
+              <div style="position: relative; width: 86px; height: 86px; border-radius: 50%; background: conic-gradient(#16B5F7 0% 75%, rgba(255,255,255,0.22) 75% 100%); display: flex; align-items: center; justify-content: center;">
+                <div style="width: 70px; height: 70px; border-radius: 50%; background: #07336b; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff;"><span style="font-family:'Outfit',sans-serif;font-weight:800;font-size:22px;">75%</span></div>
+              </div>
+              <div style="position: relative;">
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #bfe6ff; text-transform: uppercase;">Nivel actual</div>
+                <div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 22px; color: #fff; margin-top: 4px; letter-spacing: -0.02em;">{{ level }}</div>
+                <div style="display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; background: rgba(255,255,255,0.16); padding: 5px 11px; border-radius: 999px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFD23F"><path d="m12 2 3 7 7 .5-5.5 4.5 2 7-6.5-4-6.5 4 2-7L2 9.5 9 9z"/></svg><span style="font-size: 12px; font-weight: 700; color: #fff;">1,240 pts</span></div>
+              </div>
+            </div>
+
+            <!-- badges -->
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 18px 0 10px;"><span style="font-size: 13px; font-weight: 700; color: #07254F;">Insignias</span><span style="font-size: 12px; font-weight: 700; color: #0073CC;">Ver todas</span></div>
+            <div style="display: flex; gap: 12px;">
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;"><div style="width: 100%; aspect-ratio: 1; border-radius: 16px; background: linear-gradient(135deg,#FFE9A8,#F5A623); display: flex; align-items: center; justify-content: center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="m12 2 3 7 7 .5-5.5 4.5 2 7-6.5-4-6.5 4 2-7L2 9.5 9 9z"/></svg></div><span style="font-size: 10px; font-weight: 700; color: #07254F;">Flotaci&oacute;n</span></div>
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;"><div style="width: 100%; aspect-ratio: 1; border-radius: 16px; background: linear-gradient(135deg,#A8E6FF,#16B5F7); display: flex; align-items: center; justify-content: center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="#fff"><path d="M12 2C7 8 5 11 5 15a7 7 0 0 0 14 0c0-4-2-7-7-13Z"/></svg></div><span style="font-size: 10px; font-weight: 700; color: #07254F;">Respiraci&oacute;n</span></div>
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;"><div style="width: 100%; aspect-ratio: 1; border-radius: 16px; background: linear-gradient(135deg,#C9F5DF,#18B57A); display: flex; align-items: center; justify-content: center;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12l5 5 9-11"/></svg></div><span style="font-size: 10px; font-weight: 700; color: #07254F;">Crol 25m</span></div>
+              <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;"><div style="width: 100%; aspect-ratio: 1; border-radius: 16px; background: #EEF3F8; border: 1.5px dashed #cdd9e6; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><span style="font-size: 10px; font-weight: 700; color: #9fb3c8;">Espalda</span></div>
+            </div>
+
+            <!-- skills -->
+            <div style="font-size: 13px; font-weight: 700; color: #07254F; margin: 20px 0 12px;">Habilidades</div>
+            <div style="display: flex; flex-direction: column; gap: 13px;">
+              <div><div style="display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: #07254F; margin-bottom: 6px;"><span>Respiraci&oacute;n</span><span style="color:#6E8AAA;">90%</span></div><div style="height: 8px; border-radius: 999px; background: #E8F0F8;"><div style="width: 90%; height: 100%; border-radius: 999px; background: linear-gradient(90deg,#0073CC,#16B5F7);"></div></div></div>
+              <div><div style="display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: #07254F; margin-bottom: 6px;"><span>Crol</span><span style="color:#6E8AAA;">75%</span></div><div style="height: 8px; border-radius: 999px; background: #E8F0F8;"><div style="width: 75%; height: 100%; border-radius: 999px; background: linear-gradient(90deg,#0073CC,#16B5F7);"></div></div></div>
+              <div><div style="display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 600; color: #07254F; margin-bottom: 6px;"><span>Espalda</span><span style="color:#6E8AAA;">45%</span></div><div style="height: 8px; border-radius: 999px; background: #E8F0F8;"><div style="width: 45%; height: 100%; border-radius: 999px; background: linear-gradient(90deg,#0073CC,#16B5F7);"></div></div></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 600;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 600;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 700;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 06 PAGOS ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">06 &middot; Pagos y membres&iacute;a</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 21px; color: #07254F; letter-spacing: -0.02em; padding: 8px 0 0;">Membres&iacute;a</div>
+
+            <!-- membership card -->
+            <div style="position: relative; margin-top: 16px; border-radius: 22px; overflow: hidden; background: linear-gradient(135deg, #07336b, #0a3e7e 55%, #0073CC); padding: 20px; min-height: 168px; box-shadow: 0 18px 30px -16px rgba(7,51,107,0.7);">
+              <img src="assets/shark-fin.png" alt="" style="position: absolute; right: -20px; bottom: -16px; width: 150px; opacity: 0.16;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div><div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #bfe6ff; text-transform: uppercase;">{{ plan }}</div><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 19px; color: #fff; margin-top: 4px;">Shark Club</div></div>
+                <span style="font-size: 10.5px; font-weight: 700; color: #07254F; background: #16B5F7; padding: 5px 11px; border-radius: 999px;">ACTIVA</span>
+              </div>
+              <div style="position: relative; margin-top: 38px; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div><div style="font-size: 10px; color: #9cc6ee; font-weight: 600;">TITULAR</div><div style="font-size: 14.5px; color: #fff; font-weight: 700; margin-top: 2px;">{{ clientName }} Torres</div></div>
+                <div><div style="font-size: 10px; color: #9cc6ee; font-weight: 600;">V&Aacute;LIDA HASTA</div><div style="font-size: 14.5px; color: #fff; font-weight: 700; margin-top: 2px;">08 / 26</div></div>
+              </div>
+            </div>
+
+            <!-- plan -->
+            <div style="display: flex; align-items: center; gap: 14px; margin-top: 16px; background: #fff; border: 1px solid #E7EFF7; border-radius: 18px; padding: 16px;">
+              <div style="width: 46px; height: 46px; border-radius: 13px; background: #EAF4FE; display: flex; align-items: center; justify-content: center;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><path d="M12 2C7 8 5 11 5 15a7 7 0 0 0 14 0c0-4-2-7-7-13Z"/></svg></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 15px; color: #07254F;">{{ price }} / mes</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 2px;">Renueva el 8 de julio &middot; 8 clases</div></div>
+              <span style="font-size: 12px; font-weight: 700; color: #0073CC;">Cambiar</span>
+            </div>
+
+            <!-- método de pago -->
+            <div style="font-size: 13px; font-weight: 700; color: #07254F; margin: 18px 0 10px;">M&eacute;todo de pago</div>
+            <div style="display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px 16px;">
+              <div style="width: 42px; height: 30px; border-radius: 6px; background: linear-gradient(135deg,#1a1f71,#2b3a9e); display: flex; align-items: center; justify-content: center; color: #fff; font-family:'Outfit',sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 0.5px;">VISA</div>
+              <div style="flex: 1; font-size: 13.5px; color: #07254F; font-weight: 600;">&bull;&bull;&bull;&bull;  4821</div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+
+            <!-- historial -->
+            <div style="font-size: 13px; font-weight: 700; color: #07254F; margin: 18px 0 10px;">Historial</div>
+            <div style="display: flex; align-items: center; gap: 12px; padding: 11px 2px;">
+              <div style="width: 34px; height: 34px; border-radius: 10px; background: #E4F7EF; display: flex; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2.5"><path d="M5 12l5 5 9-11"/></svg></div>
+              <div style="flex: 1;"><div style="font-size: 13.5px; font-weight: 700; color: #07254F;">Mensualidad junio</div><div style="font-size: 11.5px; color: #6E8AAA;">8 jun 2026</div></div>
+              <span style="font-size: 13.5px; font-weight: 700; color: #07254F;">{{ price }}</span>
+            </div>
+            <div style="height: 1px; background: #EAF1F8;"></div>
+            <div style="display: flex; align-items: center; gap: 12px; padding: 11px 2px;">
+              <div style="width: 34px; height: 34px; border-radius: 10px; background: #E4F7EF; display: flex; align-items: center; justify-content: center;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2.5"><path d="M5 12l5 5 9-11"/></svg></div>
+              <div style="flex: 1;"><div style="font-size: 13.5px; font-weight: 700; color: #07254F;">Mensualidad mayo</div><div style="font-size: 11.5px; color: #6E8AAA;">8 may 2026</div></div>
+              <span style="font-size: 13.5px; font-weight: 700; color: #07254F;">{{ price }}</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 600;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 600;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 700;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== ROW 3 ===================== -->
+  <div style="display: flex; gap: 44px; align-items: flex-start;">
+
+    <!-- ============ 07 MENSAJES ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">07 &middot; Mensajer&iacute;a con el equipo</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0 14px;">
+              <div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 21px; color: #07254F; letter-spacing: -0.02em;">Mensajes</div>
+              <div style="width: 40px; height: 40px; border-radius: 13px; background: var(--accent,#FF6A3D); display: flex; align-items: center; justify-content: center;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #E7EFF7; border-radius: 14px; padding: 12px 14px; margin-bottom: 14px;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+              <span style="font-size: 13.5px; color: #9fb3c8;">Buscar conversaci&oacute;n</span>
+            </div>
+
+            <!-- conv 1 -->
+            <div style="display: flex; align-items: center; gap: 13px; padding: 12px 4px;">
+              <div style="position: relative;"><div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg,#ffd0c0,#FF6A3D); display: flex; align-items: center; justify-content: center; color: #fff; font-family:'Outfit',sans-serif; font-weight: 800; font-size: 17px;">D</div><span style="position: absolute; bottom: 1px; right: 1px; width: 13px; height: 13px; background: #18B57A; border-radius: 50%; border: 2.5px solid #F2F8FD;"></span></div>
+              <div style="flex: 1; min-width: 0;"><div style="display: flex; justify-content: space-between;"><span style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">Coach {{ coach }}</span><span style="font-size: 11px; color: #9fb3c8;">10:24</span></div><div style="font-size: 12.5px; color: #6E8AAA; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">&iexcl;{{ swimmerName }} avanz&oacute; mucho en crol hoy! &#128079;</div></div>
+              <span style="width: 21px; height: 21px; border-radius: 50%; background: var(--accent,#FF6A3D); color: #fff; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">2</span>
+            </div>
+            <div style="height: 1px; background: #EAF1F8; margin-left: 63px;"></div>
+            <!-- conv 2 -->
+            <div style="display: flex; align-items: center; gap: 13px; padding: 12px 4px;">
+              <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg,#16B5F7,#0073CC); display: flex; align-items: center; justify-content: center; color: #fff;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 9h18M3 9l2-5h14l2 5M3 9v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9"/></svg></div>
+              <div style="flex: 1; min-width: 0;"><div style="display: flex; justify-content: space-between;"><span style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">Recepci&oacute;n Shark</span><span style="font-size: 11px; color: #9fb3c8;">Ayer</span></div><div style="font-size: 12.5px; color: #6E8AAA; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Tu pago de junio fue recibido &#9989;</div></div>
+            </div>
+            <div style="height: 1px; background: #EAF1F8; margin-left: 63px;"></div>
+            <!-- conv 3 -->
+            <div style="display: flex; align-items: center; gap: 13px; padding: 12px 4px;">
+              <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg,#C9F5DF,#18B57A); display: flex; align-items: center; justify-content: center; color: #fff;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.6"/><path d="M3 20v-1a6 6 0 0 1 12 0v1M15 20v-1a5 5 0 0 1 6-4.8"/></svg></div>
+              <div style="flex: 1; min-width: 0;"><div style="display: flex; justify-content: space-between;"><span style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">Grupo Tiburones 2</span><span style="font-size: 11px; color: #9fb3c8;">Lun</span></div><div style="font-size: 12.5px; color: #6E8AAA; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Mario: Recuerden traer gorra y goggles</div></div>
+            </div>
+            <div style="height: 1px; background: #EAF1F8; margin-left: 63px;"></div>
+            <!-- conv 4 -->
+            <div style="display: flex; align-items: center; gap: 13px; padding: 12px 4px;">
+              <div style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg,#C9B8FF,#6F4AE0); display: flex; align-items: center; justify-content: center; color: #fff;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6"/></svg></div>
+              <div style="flex: 1; min-width: 0;"><div style="display: flex; justify-content: space-between;"><span style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14.5px; color: #07254F;">Administraci&oacute;n</span><span style="font-size: 11px; color: #9fb3c8;">12 jun</span></div><div style="font-size: 12.5px; color: #6E8AAA; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Horario especial por mantenimiento</div></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 600;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 600;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 700;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 08 AVISOS ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: #03366c; text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">08 &middot; Notificaciones y avisos</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0 6px;">
+              <div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 21px; color: #07254F; letter-spacing: -0.02em;">Avisos</div>
+              <span style="font-size: 12px; font-weight: 700; color: #0073CC;">Marcar le&iacute;das</span>
+            </div>
+
+            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #9fb3c8; text-transform: uppercase; margin: 14px 0 8px;">Hoy</div>
+            <!-- aviso recordatorio -->
+            <div style="display: flex; gap: 13px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px; margin-bottom: 9px;">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: #EAF4FE; display: flex; align-items: center; justify-content: center; flex: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 13.5px; color: #07254F;">Recordatorio de clase</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px; line-height: 1.4;">{{ swimmerName }} tiene clase hoy a las {{ classTime }} en {{ pool }}.</div></div>
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent,#FF6A3D); flex: none; margin-top: 4px;"></span>
+            </div>
+            <!-- aviso level up -->
+            <div style="display: flex; gap: 13px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px; margin-bottom: 9px;">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: #FDF1DD; display: flex; align-items: center; justify-content: center; flex: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="#F5A623"><path d="m12 2 3 7 7 .5-5.5 4.5 2 7-6.5-4-6.5 4 2-7L2 9.5 9 9z"/></svg></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 13.5px; color: #07254F;">&iexcl;Nueva insignia!</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px; line-height: 1.4;">{{ swimmerName }} complet&oacute; &ldquo;Crol 25m&rdquo;. &iexcl;Felicidades!</div></div>
+              <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent,#FF6A3D); flex: none; margin-top: 4px;"></span>
+            </div>
+
+            <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #9fb3c8; text-transform: uppercase; margin: 16px 0 8px;">Esta semana</div>
+            <!-- aviso pago -->
+            <div style="display: flex; gap: 13px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px; margin-bottom: 9px;">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: #E4F7EF; display: flex; align-items: center; justify-content: center; flex: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/></svg></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 13.5px; color: #07254F;">Pago confirmado</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px; line-height: 1.4;">Tu mensualidad de junio se proces&oacute; correctamente.</div></div>
+            </div>
+            <!-- aviso horario -->
+            <div style="display: flex; gap: 13px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 14px;">
+              <div style="width: 40px; height: 40px; border-radius: 12px; background: #F0EBFE; display: flex; align-items: center; justify-content: center; flex: none;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6F4AE0" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 13.5px; color: #07254F;">Cambio de horario</div><div style="font-size: 12px; color: #6E8AAA; margin-top: 3px; line-height: 1.4;">La clase del viernes se mueve a las 6:00 PM.</div></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 700;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 600;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 600;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ 09 PERFIL Y SEGURIDAD ============ -->
+    <div style="flex: none;">
+      <div style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: var(--accent,#FF6A3D); text-transform: uppercase; margin-bottom: 14px; padding-left: 4px;">09 &middot; Perfil y seguridad</div>
+      <div style="width: 392px; padding: 12px; background: linear-gradient(160deg, #0b2545, #06182f); border-radius: 54px; box-shadow: 0 30px 60px -20px rgba(6,24,47,0.5);">
+        <div style="position: relative; width: 368px; height: 798px; background: #F2F8FD; border-radius: 43px; overflow: hidden; display: flex; flex-direction: column;">
+          <div style="position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 116px; height: 30px; background: #06182f; border-radius: 18px; z-index: 9;"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 28px 6px; font-size: 14px; font-weight: 700; color: #07254F;">
+            <span>9:41</span>
+            <span style="display: flex; gap: 6px; align-items: center;"><svg width="18" height="12" viewBox="0 0 18 12" fill="#07254F"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4" width="3" height="8" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg width="22" height="12" viewBox="0 0 24 12" fill="none"><rect x="1" y="1" width="18" height="10" rx="3" stroke="#07254F" stroke-width="1.5" opacity="0.5"/><rect x="3" y="3" width="13" height="6" rx="1.5" fill="#07254F"/><rect x="20" y="4" width="2" height="4" rx="1" fill="#07254F"/></svg></span>
+          </div>
+
+          <div style="flex: 1; overflow: hidden; padding: 8px 22px 0;">
+            <!-- profile -->
+            <div style="display: flex; align-items: center; gap: 14px; padding: 8px 0 0;">
+              <div style="width: 58px; height: 58px; border-radius: 18px; background: linear-gradient(135deg, #16B5F7, #0073CC); display: flex; align-items: center; justify-content: center; color: #fff; font-family:'Outfit',sans-serif; font-weight: 800; font-size: 22px;">A</div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 800; font-size: 19px; color: #07254F;">{{ clientName }} Torres</div><div style="display: inline-flex; align-items: center; gap: 5px; margin-top: 4px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2.4"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5Z"/><path d="m9 12 2 2 4-4"/></svg><span style="font-size: 12px; font-weight: 700; color: #18B57A;">Cuenta verificada</span></div></div>
+            </div>
+            <!-- swimmer chip -->
+            <div style="display: flex; align-items: center; gap: 12px; margin-top: 14px; background: #fff; border: 1px solid #E7EFF7; border-radius: 16px; padding: 12px 14px;">
+              <div style="width: 38px; height: 38px; border-radius: 11px; background: linear-gradient(135deg,#ffd0c0,#FF6A3D); display: flex; align-items: center; justify-content: center; color: #fff; font-family:'Outfit',sans-serif; font-weight: 800; font-size: 15px;">L</div>
+              <div style="flex: 1;"><div style="font-family:'Outfit',sans-serif; font-weight: 700; font-size: 14px; color: #07254F;">{{ swimmerName }} Torres &middot; {{ swimmerAge }} a&ntilde;os</div><div style="font-size: 12px; color: #6E8AAA;">Nadador &middot; Nivel {{ level }}</div></div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+
+            <!-- seguridad -->
+            <div style="display: flex; align-items: center; gap: 7px; margin: 18px 0 10px;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#FF6A3D)" stroke-width="2.2"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5Z"/></svg><span style="font-size: 13px; font-weight: 800; color: #07254F; font-family:'Outfit',sans-serif;">Seguridad</span></div>
+            <div style="background: #fff; border: 1px solid #E7EFF7; border-radius: 18px; overflow: hidden;">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                <span style="flex: 1; font-size: 13.5px; font-weight: 600; color: #07254F;">Verificaci&oacute;n en dos pasos</span>
+                <div style="width: 42px; height: 24px; border-radius: 999px; background: #18B57A; position: relative;"><div style="position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff;"></div></div>
+              </div>
+              <div style="height: 1px; background: #EAF1F8; margin: 0 15px;"></div>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2" stroke-linecap="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.5.5 3.5-1 5M5 13a7 7 0 0 1 12-5M3 9a10 10 0 0 1 18 0"/></svg>
+                <span style="flex: 1; font-size: 13.5px; font-weight: 600; color: #07254F;">Acceso con Face ID / huella</span>
+                <div style="width: 42px; height: 24px; border-radius: 999px; background: #18B57A; position: relative;"><div style="position: absolute; top: 2px; right: 2px; width: 20px; height: 20px; border-radius: 50%; background: #fff;"></div></div>
+              </div>
+              <div style="height: 1px; background: #EAF1F8; margin: 0 15px;"></div>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2"><path d="M12 2 4 5v6c0 5 3.5 8.5 8 11 4.5-2.5 8-6 8-11V5Z"/><path d="m9 12 2 2 4-4"/></svg>
+                <span style="flex: 1; font-size: 13.5px; font-weight: 600; color: #07254F;">Datos cifrados extremo a extremo</span>
+                <span style="font-size: 11px; font-weight: 700; color: #18B57A; background: #E4F7EF; padding: 4px 9px; border-radius: 999px;">Activo</span>
+              </div>
+            </div>
+
+            <!-- datos del nadador -->
+            <div style="font-size: 13px; font-weight: 800; color: #07254F; font-family:'Outfit',sans-serif; margin: 16px 0 10px;">Datos del nadador</div>
+            <div style="background: #fff; border: 1px solid #E7EFF7; border-radius: 18px; overflow: hidden;">
+              <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#FF6A3D)" stroke-width="2"><path d="M3 12h4l2 5 4-12 2 7h6"/></svg>
+                <span style="flex: 1; font-size: 13.5px; font-weight: 600; color: #07254F;">Informaci&oacute;n m&eacute;dica</span>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <div style="height: 1px; background: #EAF1F8; margin: 0 15px;"></div>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0073CC" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z"/></svg>
+                <span style="flex: 1; font-size: 13.5px; font-weight: 600; color: #07254F;">Contactos de emergencia</span>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+              <div style="height: 1px; background: #EAF1F8; margin: 0 15px;"></div>
+              <div style="display: flex; align-items: center; gap: 12px; padding: 13px 15px;">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#18B57A" stroke-width="2"><circle cx="9" cy="8" r="3.2"/><path d="M3 20v-1a6 6 0 0 1 12 0v1M16 11l2 2 4-4"/></svg>
+                <span style="flex: 1; font-size: 13.5px; font-weight: 600; color: #07254F;">Autorizados para recoger</span>
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9fb3c8" stroke-width="2.2"><path d="m9 18 6-6-6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 14px 22px; background: #ffffff; border-top: 1px solid #EAF1F8;">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 10 9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 21V12h6v9"/></svg><span style="font-size: 10px; font-weight: 600;">Inicio</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span style="font-size: 10px; font-weight: 600;">Reservar</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.7V17c0 .6-.5 1-1 1.2C7.9 18.8 7 20.2 7 22M14 14.7V17c0 .6.5 1 1 1.2 1.1.6 2 2 2 4.8M18 2H6v7a6 6 0 0 0 12 0z"/></svg><span style="font-size: 10px; font-weight: 600;">Progreso</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: #9fb3c8;"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span style="font-size: 10px; font-weight: 600;">Mensajes</span></div>
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--accent, #FF6A3D);"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg><span style="font-size: 10px; font-weight: 700;">Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1340,&quot;height&quot;:900},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6A3D&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;clientName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;luis ruales&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;membershipPlan&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;personlizado &quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { editing: false };
+
+  renderVals() {
+    const p = this.props || {};
+    const g = (k, pk, d) => {
+      const sv = this.state[k];
+      if (sv !== undefined && sv !== null) return sv;
+      if (pk && p[pk] !== undefined && p[pk] !== null && p[pk] !== '') return p[pk];
+      return d;
+    };
+    const set = (k) => (e) => this.setState({ [k]: e.target.value });
+    const vals = {
+      editing: !!this.state.editing,
+      toggleEdit: () => this.setState((s) => ({ editing: !s.editing })),
+      reset: () => this.setState({
+        accent: null, clientName: null, swimmerName: null, swimmerAge: null,
+        level: null, coach: null, classTime: null, pool: null, lane: null,
+        plan: null, price: null
+      }),
+      accent: g('accent', 'accentColor', '#FF6A3D'),
+      clientName: g('clientName', 'clientName', 'Ana'),
+      swimmerName: g('swimmerName', null, 'Lucas'),
+      swimmerAge: g('swimmerAge', null, '8'),
+      level: g('level', null, 'Tiburón 2'),
+      coach: g('coach', null, 'Diana'),
+      classTime: g('classTime', null, '5:00 PM'),
+      pool: g('pool', null, 'Alberca A'),
+      lane: g('lane', null, '3'),
+      plan: g('plan', 'membershipPlan', 'Plan Olas Premium'),
+      price: g('price', null, '$1,200'),
+      h: {}
+    };
+    ['accent', 'clientName', 'swimmerName', 'swimmerAge', 'level', 'coach', 'classTime', 'pool', 'lane', 'plan', 'price']
+      .forEach((k) => { vals.h[k] = set(k); });
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

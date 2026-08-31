@@ -1,0 +1,560 @@
+<meta charset="utf-8">
+<title>PRD App Móvil Shark Swimming Club</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+  :root{
+    --bg:#F5F8FC;
+    --surface:#FFFFFF;
+    --surface-alt:#EAF1F8;
+    --border:#D7E3EF;
+    --text:#07254F;
+    --text-muted:#52708F;
+    --text-faint:#8DA3BC;
+    --accent:#0073CC;
+    --accent-cyan:#16B5F7;
+    --accent-warm:#FF6A3D;
+    --success:#18B57A;
+    --success-bg:#E3F7EE;
+    --warn-bg:#FFF1EA;
+    --nav-bg-a: #07336b;
+    --nav-bg-b: #0073CC;
+    --nav-bg-c: #16B5F7;
+    --shadow: 0 20px 40px -24px rgba(7,37,79,0.25);
+    --focus: #0073CC;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#071B33;
+      --surface:#0E2A4C;
+      --surface-alt:#123259;
+      --border:#1E4372;
+      --text:#EAF3FC;
+      --text-muted:#8FAAC7;
+      --text-faint:#5E7FA3;
+      --accent:#4CC3FF;
+      --accent-cyan:#6FD8FF;
+      --accent-warm:#FF9670;
+      --success:#3DD69A;
+      --success-bg:#0F3B32;
+      --warn-bg:#3B2417;
+      --shadow: 0 20px 44px -20px rgba(0,0,0,0.55);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#071B33;
+    --surface:#0E2A4C;
+    --surface-alt:#123259;
+    --border:#1E4372;
+    --text:#EAF3FC;
+    --text-muted:#8FAAC7;
+    --text-faint:#5E7FA3;
+    --accent:#4CC3FF;
+    --accent-cyan:#6FD8FF;
+    --accent-warm:#FF9670;
+    --success:#3DD69A;
+    --success-bg:#0F3B32;
+    --warn-bg:#3B2417;
+    --shadow: 0 20px 44px -20px rgba(0,0,0,0.55);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Plus Jakarta Sans', system-ui, sans-serif;
+    line-height:1.55;
+  }
+  ::selection{ background: var(--accent-cyan); color:#052042; }
+
+  a{ color:var(--accent); }
+  h1,h2,h3{ font-family:'Outfit', system-ui, sans-serif; text-wrap:balance; letter-spacing:-0.01em; color:var(--text); }
+
+  .doc-shell{
+    display:grid;
+    grid-template-columns: 248px minmax(0,760px);
+    justify-content:center;
+    gap:56px;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px 100px;
+  }
+
+  /* ---------- hero band ---------- */
+  .hero{
+    grid-column: 1 / -1;
+    background: linear-gradient(120deg, var(--nav-bg-a) 0%, var(--nav-bg-b) 65%, var(--nav-bg-c) 130%);
+    border-radius: 0 0 28px 28px;
+    padding: 46px 28px 40px;
+    margin: 0 0 8px;
+    color:#EAF6FF;
+  }
+  .hero-inner{ max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:14px; }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; width:fit-content;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; font-weight:600;
+    letter-spacing:0.09em; text-transform:uppercase; color:#BFE6FF;
+    background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18);
+    padding:6px 12px; border-radius:999px;
+  }
+  .hero h1{ color:#fff; font-size:clamp(28px,4vw,38px); font-weight:800; margin:2px 0 0; max-width:20ch; }
+  .hero p.sub{ color:#CFE8FF; font-size:15.5px; max-width:62ch; margin:0; }
+  .hero-meta{ display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:10px; }
+  .hero-meta div{ display:flex; flex-direction:column; gap:2px; }
+  .hero-meta .k{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.08em; text-transform:uppercase; color:#8fc7ec; }
+  .hero-meta .v{ font-size:13.5px; font-weight:600; color:#fff; }
+
+  /* ---------- side nav ---------- */
+  .toc{ position:sticky; top:28px; align-self:start; padding-top:34px; }
+  .toc-label{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-faint); margin:0 0 12px 2px; }
+  .toc ol{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1px; border-left:2px solid var(--border); }
+  .toc a{
+    display:flex; gap:10px; padding:7px 0 7px 14px; text-decoration:none;
+    font-size:13px; font-weight:600; color:var(--text-muted);
+    border-left:2px solid transparent; margin-left:-2px;
+  }
+  .toc a:hover{ color:var(--accent); }
+  .toc a .num{ font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--text-faint); }
+  .toc a:hover .num{ color:var(--accent); }
+
+  /* ---------- main content ---------- */
+  main{ padding-top:34px; min-width:0; }
+  section{ padding:40px 0; border-top:1px solid var(--border); }
+  section:first-of-type{ border-top:none; padding-top:6px; }
+  .sec-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:16px; }
+  .sec-head .num{ font-family:'IBM Plex Mono',monospace; font-size:14px; font-weight:600; color:var(--accent-cyan); }
+  .sec-head h2{ font-size:22px; font-weight:700; margin:0; }
+  section h3{ font-size:16px; font-weight:700; margin:26px 0 10px; }
+  p{ margin:0 0 14px; color:var(--text); max-width:70ch; }
+  p.muted{ color:var(--text-muted); }
+  strong{ color:var(--text); }
+  ul,ol.plain{ margin:0 0 14px; padding-left:22px; }
+  li{ margin-bottom:6px; max-width:66ch; }
+  li::marker{ color:var(--accent-cyan); }
+
+  /* tables */
+  .tbl-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:14px; margin:0 0 14px; }
+  table{ border-collapse:collapse; width:100%; min-width:520px; font-size:13.5px; }
+  th,td{ text-align:left; padding:11px 14px; border-bottom:1px solid var(--border); vertical-align:top; }
+  thead th{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); background:var(--surface-alt); font-weight:600; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr:hover{ background:var(--surface-alt); }
+
+  .pill{ display:inline-flex; align-items:center; font-size:11.5px; font-weight:700; padding:3px 10px; border-radius:999px; white-space:nowrap; }
+  .pill-cliente{ background:rgba(0,115,204,0.14); color:var(--accent); }
+  .pill-instructor{ background:rgba(22,181,247,0.16); color:#0a92c6; }
+  :root[data-theme="dark"] .pill-instructor{ color:var(--accent-cyan); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .pill-instructor{ color:var(--accent-cyan); } }
+  .pill-admin{ background:rgba(255,106,61,0.15); color:#c8502a; }
+  :root[data-theme="dark"] .pill-admin{ color:var(--accent-warm); }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .pill-admin{ color:var(--accent-warm); } }
+  .pill-done{ background:var(--success-bg); color:var(--success); }
+  .pill-todo{ background:var(--surface-alt); color:var(--text-muted); }
+
+  /* callouts */
+  .callout{ border-radius:14px; padding:16px 18px; margin:0 0 14px; border:1px solid var(--border); background:var(--surface); }
+  .callout .ctitle{ display:flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; letter-spacing:0.07em; text-transform:uppercase; margin-bottom:8px; }
+  .callout p, .callout li{ margin-bottom:6px; font-size:13.8px; }
+  .callout.risk{ border-color: color-mix(in srgb, var(--accent-warm) 40%, var(--border)); background: var(--warn-bg); }
+  .callout.risk .ctitle{ color:var(--accent-warm); }
+  .callout.decision{ border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); background: var(--surface-alt); }
+  .callout.decision .ctitle{ color:var(--accent); }
+  .callout.open{ background:var(--surface); }
+  .callout.open .ctitle{ color:var(--text-muted); }
+
+  .question-list{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+  .question-list li{ display:flex; gap:12px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:12px 14px; max-width:none; }
+  .question-list .qnum{ font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--accent); flex:none; }
+
+  .card-grid{ display:grid; grid-template-columns: repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin:0 0 14px; }
+  .card{ background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:16px; }
+  .card .k{ font-family:'IBM Plex Mono',monospace; font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-faint); margin-bottom:6px; }
+  .card .v{ font-weight:700; font-size:14.5px; }
+
+  .brand-swatches{ display:flex; gap:10px; flex-wrap:wrap; margin:0 0 14px; }
+  .swatch{ display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:999px; padding:6px 12px 6px 6px; }
+  .swatch .dot{ width:22px; height:22px; border-radius:50%; border:1px solid rgba(0,0,0,0.08); }
+  .swatch .lbl{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; font-weight:600; }
+
+  a:focus-visible, .toc a:focus-visible{ outline:2px solid var(--focus); outline-offset:2px; border-radius:4px; }
+
+  @media (max-width: 880px){
+    .doc-shell{ grid-template-columns: minmax(0,1fr); }
+    .toc{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ scroll-behavior:auto !important; } }
+  html{ scroll-behavior:smooth; }
+</style>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Product Requirements Document</span>
+    <h1>App móvil Shark Swimming Club</h1>
+    <p class="sub">De prototipo visual (9 pantallas en Claude Design) a aplicación real en Android e iOS — alcance, roles, seguridad y arquitectura propuesta.</p>
+    <div class="hero-meta">
+      <div><span class="k">Plataformas</span><span class="v">Android · iOS</span></div>
+      <div><span class="k">Idioma</span><span class="v">Español</span></div>
+      <div><span class="k">Versión</span><span class="v">1.0</span></div>
+      <div><span class="k">Fecha</span><span class="v">31 ago 2026</span></div>
+      <div><span class="k">Origen</span><span class="v">Claude Design + brief del dueño</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="doc-shell">
+  <nav class="toc">
+    <div class="toc-label">Contenido</div>
+    <ol>
+      <li><a href="#resumen"><span class="num">01</span>Resumen ejecutivo</a></li>
+      <li><a href="#contexto"><span class="num">02</span>Contexto de negocio</a></li>
+      <li><a href="#objetivos"><span class="num">03</span>Objetivos</a></li>
+      <li><a href="#roles"><span class="num">04</span>Usuarios y roles</a></li>
+      <li><a href="#alcance"><span class="num">05</span>Alcance por versión</a></li>
+      <li><a href="#funcionales"><span class="num">06</span>Requisitos funcionales</a></li>
+      <li><a href="#no-funcionales"><span class="num">07</span>Requisitos no funcionales</a></li>
+      <li><a href="#arquitectura"><span class="num">08</span>Arquitectura propuesta</a></li>
+      <li><a href="#metricas"><span class="num">09</span>Métricas de éxito</a></li>
+      <li><a href="#riesgos"><span class="num">10</span>Riesgos y supuestos</a></li>
+      <li><a href="#preguntas"><span class="num">11</span>Preguntas abiertas</a></li>
+      <li><a href="#anexo"><span class="num">12</span>Anexo · pantallas</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <section id="resumen">
+      <div class="sec-head"><span class="num">01</span><h2>Resumen ejecutivo</h2></div>
+      <p>Shark Swimming Club (SSC) necesita una aplicación móvil nativa (Android + iOS) para digitalizar la operación de su escuela de natación: reservas de clases, control de asistencia, pagos y membresías, seguimiento del progreso del nadador, mensajería con el equipo, horarios y notificaciones — todo con un estándar de seguridad alto, dado que la app maneja datos de menores de edad (información médica, contactos de emergencia, personas autorizadas para recoger a los niños).</p>
+      <p>El diseño visual ya existe (9 pantallas + panel de edición de marca) y sirve como especificación de UI de referencia. Este documento define el <strong>alcance funcional, los roles, los requisitos no funcionales y la arquitectura propuesta</strong> para pasar de ese prototipo (HTML/CSS estático) a una aplicación real, instalable en App Store y Google Play, con backend y base de datos.</p>
+    </section>
+
+    <section id="contexto">
+      <div class="sec-head"><span class="num">02</span><h2>Contexto de negocio</h2></div>
+      <ul>
+        <li>Negocio mixto: escuela de natación con clases grupales/individuales, niveles por nadador, e instructores/coaches.</li>
+        <li>Usuarios actuales del negocio: clientes/padres de familia, instructores, administración (el propio dueño, Luis Ruales).</li>
+        <li>Requisito explícito del dueño: <strong>"que no pueda ser hackeada la aplicación"</strong> — la seguridad no es un extra, es un requisito de aceptación.</li>
+        <li>Referencia de mercado citada: smart-swimmer.com, con la instrucción de <strong>mejorarla</strong>.</li>
+      </ul>
+      <div class="brand-swatches">
+        <div class="swatch"><span class="dot" style="background:#003577"></span><span class="lbl">#003577 navy</span></div>
+        <div class="swatch"><span class="dot" style="background:#0073CC"></span><span class="lbl">#0073CC azul</span></div>
+        <div class="swatch"><span class="dot" style="background:#16B5F7"></span><span class="lbl">#16B5F7 cian</span></div>
+        <div class="swatch"><span class="dot" style="background:#FF6A3D"></span><span class="lbl">#FF6A3D acento</span></div>
+      </div>
+      <p class="muted">Marca: logo del tiburón, paleta navy / azul / cian, con acento coral configurable desde un panel de marca.</p>
+    </section>
+
+    <section id="objetivos">
+      <div class="sec-head"><span class="num">03</span><h2>Objetivos del producto</h2></div>
+      <ol class="plain">
+        <li>Permitir a los padres/clientes reservar y gestionar clases sin llamar o escribir por WhatsApp.</li>
+        <li>Dar visibilidad del progreso del nadador (niveles, insignias, habilidades) para aumentar la percepción de valor y la retención.</li>
+        <li>Cobrar membresías de forma digital y reducir la gestión manual de pagos.</li>
+        <li>Centralizar la comunicación cliente ↔ instructor ↔ administración en un canal auditable y seguro.</li>
+        <li>Proteger datos sensibles de menores (salud, contactos de emergencia, autorizados de recogida) con cifrado y controles de acceso robustos.</li>
+        <li>Dar a Luis (dueño) una consola de administración para operar el negocio sin depender de un desarrollador para cada cambio de precio, horario o texto.</li>
+      </ol>
+    </section>
+
+    <section id="roles">
+      <div class="sec-head"><span class="num">04</span><h2>Usuarios y roles</h2></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Rol</th><th>Quién</th><th>Necesidades clave</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="pill pill-cliente">Cliente / padre</span></td>
+              <td>Contrata el servicio para su(s) hijo(s), o para sí mismo si es adulto</td>
+              <td>Reservar clases, ver horario, ver progreso del nadador, pagar membresía, mensajear con el equipo, recibir avisos, gestionar datos de seguridad/emergencia</td>
+            </tr>
+            <tr>
+              <td><span class="pill pill-instructor">Instructor / coach</span></td>
+              <td>Da las clases</td>
+              <td>Ver su agenda del día/semana, pasar lista (asistencia), ver ficha del nadador (nivel, notas médicas relevantes), mensajear con padres y administración</td>
+            </tr>
+            <tr>
+              <td><span class="pill pill-admin">Administrador</span></td>
+              <td>Dueño / staff de recepción, opera el negocio</td>
+              <td>Gestionar horarios, precios y planes, altas/bajas de alumnos e instructores, ver pagos y cobros pendientes, enviar avisos masivos, editar textos/marca de la app, ver reportes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="muted">El prototipo actual solo cubre la vista de <strong>cliente</strong>, más un editor de marca pensado para el dueño. Las vistas de instructor y administrador se sugirieron en la conversación de diseño pero no se construyeron — quedan como alcance explícito de este PRD (secciones 6.10 y 6.11).</p>
+    </section>
+
+    <section id="alcance">
+      <div class="sec-head"><span class="num">05</span><h2>Alcance por versión</h2></div>
+
+      <h3>MVP (v1.0) — lanzamiento a tiendas</h3>
+      <ul>
+        <li>Autenticación segura + biometría (cliente e instructor).</li>
+        <li>Home / dashboard del cliente.</li>
+        <li>Reserva de clases (calendario + horarios disponibles/llenos).</li>
+        <li>Horario semanal/mensual del alumno.</li>
+        <li>Progreso y niveles (insignias, habilidades, % de nivel).</li>
+        <li>Pagos y membresía: estado, historial, método de pago guardado, cobro recurrente.</li>
+        <li>Mensajería cliente ↔ instructor/administración (chat 1:1 y grupal por clase).</li>
+        <li>Notificaciones push + centro de avisos in-app.</li>
+        <li>Perfil y seguridad: 2FA, biometría, datos médicos, contactos de emergencia, autorizados para recoger.</li>
+        <li>Vista de instructor: agenda del día, pase de lista, ficha básica del nadador.</li>
+        <li>Panel de administración: horarios, precios, planes, altas de alumnos/instructores, marca (color, textos).</li>
+      </ul>
+
+      <h3>v1.1</h3>
+      <ul>
+        <li>Registro / onboarding self-service (alta de cliente y nadador sin intervención manual).</li>
+        <li>Reportes de administración (ingresos, asistencia, ocupación por horario).</li>
+        <li>Recordatorios automáticos de pago vencido / clase próxima por push + email.</li>
+        <li>Edición granular de horario (clase por clase) e insignias desde el panel del dueño.</li>
+      </ul>
+
+      <h3>v2 (futuro)</h3>
+      <ul>
+        <li>Soporte multi-sede, si el negocio opera o planea operar en más de una alberca/ubicación.</li>
+        <li>Programa de referidos / comisiones.</li>
+        <li>Integración con evaluación física / video del nadador.</li>
+      </ul>
+    </section>
+
+    <section id="funcionales">
+      <div class="sec-head"><span class="num">06</span><h2>Requisitos funcionales</h2></div>
+      <p class="muted">Cada módulo se referencia contra la pantalla del prototipo correspondiente.</p>
+
+      <h3>6.1 · Autenticación y acceso seguro <span class="pill pill-done" style="margin-left:6px;">pantalla 01</span></h3>
+      <ul>
+        <li>Login con correo + contraseña.</li>
+        <li>Desbloqueo biométrico (Face ID / huella) tras el primer login.</li>
+        <li>Recuperación de contraseña por correo.</li>
+        <li>Sesión con expiración y cierre de sesión remoto.</li>
+        <li>El mensaje "conexión cifrada extremo a extremo" debe ser <strong>real</strong>: TLS 1.2+ en todo tránsito, cifrado en reposo para datos sensibles — no solo cosmético.</li>
+      </ul>
+
+      <h3>6.2 · Inicio / dashboard <span class="pill pill-done" style="margin-left:6px;">pantalla 02</span></h3>
+      <ul>
+        <li>Tarjeta de "próxima clase" (nivel, nadador, carril, hora, alberca, coach) con acceso directo a detalles.</li>
+        <li>Accesos rápidos: Reservar, Pagar, Asistencia, Mensajes.</li>
+        <li>Resumen de progreso (% de nivel, clases completadas esta semana).</li>
+        <li>Debe soportar <strong>múltiples nadadores por cuenta</strong> — el prototipo asume uno; el sistema real necesita selector.</li>
+      </ul>
+
+      <h3>6.3 · Reservar clase <span class="pill pill-done" style="margin-left:6px;">pantalla 03</span></h3>
+      <ul>
+        <li>Selector de fecha (vista semanal, navegación por día).</li>
+        <li>Horarios con cupo disponible / lleno, filtrado por nivel del nadador.</li>
+        <li>Confirmación de reserva con resumen (hora, nivel, coach, cupos).</li>
+      </ul>
+      <div class="callout decision">
+        <div class="ctitle">Regla de negocio a definir</div>
+        <p>¿Cuántas clases incluye cada plan? ¿Se puede reservar por encima del plan? ¿Cuál es la política de cancelación / reprogramación y con cuánta anticipación?</p>
+      </div>
+
+      <h3>6.4 · Horario semanal/mensual <span class="pill pill-done" style="margin-left:6px;">pantalla 04</span></h3>
+      <ul>
+        <li>Vista de clases reservadas, disponibles y especiales (ej. evaluación de nivel) por día.</li>
+        <li>Toggle semana/mes con estados visuales: reservado, disponible, especial.</li>
+      </ul>
+
+      <h3>6.5 · Progreso y niveles <span class="pill pill-done" style="margin-left:6px;">pantalla 05</span></h3>
+      <ul>
+        <li>Nivel actual del nadador + % de avance (anillo visual).</li>
+        <li>Insignias obtenidas y pendientes (Flotación, Respiración, Crol 25m, Espalda…).</li>
+        <li>Barras de habilidad por técnica, editables solo por instructor/admin — nunca por el cliente.</li>
+        <li>Puntos acumulados: definir si tienen efecto real (descuentos, mérito) o son solo motivacionales.</li>
+      </ul>
+
+      <h3>6.6 · Pagos y membresía <span class="pill pill-done" style="margin-left:6px;">pantalla 06</span></h3>
+      <ul>
+        <li>Tarjeta de membresía activa (plan, titular, vigencia) y detalle del plan.</li>
+        <li>Método de pago guardado con opción de cambiar, e historial de pagos.</li>
+        <li>Integración con una pasarela de pago habilitada en Ecuador con cobro recurrente/tokenización (candidatos: PlaceToPay, PayPhone, Datafast, o Stripe si se factura desde el exterior).</li>
+      </ul>
+      <div class="callout risk">
+        <div class="ctitle">Cumplimiento</div>
+        <p>La app <strong>nunca</strong> debe almacenar el número de tarjeta completo — se delega a la pasarela vía tokenización (PCI-DSS).</p>
+      </div>
+
+      <h3>6.7 · Mensajería <span class="pill pill-done" style="margin-left:6px;">pantalla 07</span></h3>
+      <ul>
+        <li>Conversaciones con instructor, recepción/administración, grupo de clase y avisos administrativos.</li>
+        <li>Chat con texto, no leídos, timestamp; soporte de broadcast/grupo y 1:1.</li>
+        <li>Definir si el admin puede ver todos los chats por seguridad de menores — recomendado que sí, con aviso de transparencia a los usuarios.</li>
+      </ul>
+
+      <h3>6.8 · Notificaciones y avisos <span class="pill pill-done" style="margin-left:6px;">pantalla 08</span></h3>
+      <ul>
+        <li>Push (recordatorio de clase, insignia nueva, pago confirmado, cambio de horario) + centro in-app agrupado por fecha.</li>
+        <li>Preferencias por tipo — el cliente puede apagar categorías no críticas, nunca las de seguridad/pago.</li>
+      </ul>
+
+      <h3>6.9 · Perfil y seguridad <span class="pill pill-done" style="margin-left:6px;">pantalla 09</span></h3>
+      <ul>
+        <li>Datos del titular y del nadador; 2FA y biometría como toggles.</li>
+        <li><strong>Información médica</strong> del nadador (alergias, condiciones, medicación) — cifrado en reposo, acceso restringido a cliente, instructor asignado y admin.</li>
+        <li><strong>Contactos de emergencia</strong> y <strong>autorizados para recoger</strong> al nadador, con foto/identificación si es posible.</li>
+        <li>Gestión de sesión: ver dispositivos conectados y cerrar sesión remota — implícito en "que no pueda ser hackeada", no cubierto en el prototipo visual.</li>
+      </ul>
+
+      <h3>6.10 · Vista de instructor <span class="pill pill-todo" style="margin-left:6px;">nueva — sin diseño</span></h3>
+      <ul>
+        <li>Agenda del día/semana con sus clases asignadas.</li>
+        <li>Pase de lista / control de asistencia por clase.</li>
+        <li>Ficha del nadador: nivel, habilidades, alertas médicas relevantes, sin exponer el historial completo salvo que el rol lo requiera.</li>
+        <li>Mensajería con padres del grupo y con administración; actualización de progreso/insignias tras la clase.</li>
+      </ul>
+
+      <h3>6.11 · Panel de administración <span class="pill pill-todo" style="margin-left:6px;">evoluciona el editor del prototipo</span></h3>
+      <p>El prototipo incluye un editor de marca en vivo (color, nombre de cliente, datos de próxima clase, plan y precio) pensado como demo. En producción se convierte en un <strong>panel de administración real</strong> — web o app dedicada — con:</p>
+      <ul>
+        <li>Gestión de horarios y clases (crear, editar, cancelar, asignar coach, cupos).</li>
+        <li>Gestión de alumnos e instructores, planes y precios de membresía.</li>
+        <li>Vista de pagos: exitosos, fallidos, pendientes; conciliación.</li>
+        <li>Envío de avisos masivos y personalización de marca, persistida en backend (no en estado local del navegador).</li>
+        <li>Control de accesos: quién en el equipo tiene permisos de administrador vs. solo lectura.</li>
+      </ul>
+    </section>
+
+    <section id="no-funcionales">
+      <div class="sec-head"><span class="num">07</span><h2>Requisitos no funcionales</h2></div>
+
+      <h3>7.1 · Seguridad — prioridad #1 del negocio</h3>
+      <ul>
+        <li>Cifrado en tránsito (TLS 1.2+) y en reposo para datos sensibles: información médica, contactos de emergencia, tokens de pago.</li>
+        <li>Autenticación: contraseña + biometría + 2FA opcional (recomendado obligatorio para administradores).</li>
+        <li>Sesiones con expiración, refresh tokens y revocación remota.</li>
+        <li>Control de acceso basado en roles (RBAC) a nivel de <strong>API</strong>, no solo de interfaz.</li>
+        <li>Mitigación del OWASP Mobile Top 10: inyección, almacenamiento inseguro, comunicación insegura, autenticación rota.</li>
+        <li>Auditoría de accesos y cambios sobre datos sensibles.</li>
+        <li>Consentimiento del padre/tutor para procesar datos del nadador; política de retención y borrado al dar de baja.</li>
+        <li>Revisión de seguridad (pentesting básico o auditoría de dependencias) antes de cada release mayor.</li>
+      </ul>
+
+      <div class="card-grid">
+        <div class="card"><div class="k">Disponibilidad</div><div class="v">≥ 99.5% backend</div></div>
+        <div class="card"><div class="k">Carga de pantalla</div><div class="v">&lt; 2s en 4G</div></div>
+        <div class="card"><div class="k">Idioma v1</div><div class="v">Español (Ecuador)</div></div>
+        <div class="card"><div class="k">Moneda</div><div class="v">USD</div></div>
+      </div>
+
+      <h3>7.2 · Disponibilidad y desempeño</h3>
+      <p>Modo de solo lectura ante pérdida de conexión (horario/progreso ya cargado) — no se requiere reserva offline en v1.</p>
+
+      <h3>7.3 · Localización y accesibilidad</h3>
+      <p>Arquitectura de textos preparada para agregar idiomas después (sin strings hardcodeados). Contraste y tamaños de texto acordes a WCAG AA donde aplique a apps móviles.</p>
+
+      <h3>7.4 · Plataformas y dispositivos</h3>
+      <p>iOS: últimas 2 versiones mayores soportadas por Apple al lanzamiento. Android: rango de API level acorde al parque real de dispositivos de los clientes de SSC.</p>
+    </section>
+
+    <section id="arquitectura">
+      <div class="sec-head"><span class="num">08</span><h2>Arquitectura técnica propuesta</h2></div>
+
+      <h3>8.1 · Enfoque de desarrollo</h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Enfoque</th><th>Cuándo tiene sentido</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cross-platform</strong> (React Native / Flutter) — recomendado</td><td>Una sola base de código para Android e iOS; la complejidad del proyecto es de reglas de negocio (reservas, pagos, roles), no gráfica.</td></tr>
+            <tr><td>Nativo (Swift / Kotlin)</td><td>Solo si se anticipan requisitos muy específicos de hardware o rendimiento que el prototipo no sugiere.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>8.2 · Backend</h3>
+      <ul>
+        <li>API REST o GraphQL sobre backend gestionado (Node.js/NestJS, o BaaS tipo Supabase/Firebase con reglas de seguridad estrictas) + PostgreSQL por la naturaleza transaccional de reservas y pagos.</li>
+        <li>Autenticación con soporte de 2FA y biometría en cliente, validada en servidor.</li>
+        <li>Notificaciones push vía FCM (Android) y APNs (iOS).</li>
+        <li>Almacenamiento cifrado para datos médicos y documentos de autorización de recogida.</li>
+      </ul>
+
+      <h3>8.3 · Integraciones necesarias</h3>
+      <ul>
+        <li>Pasarela de pago con cobro recurrente en Ecuador.</li>
+        <li>Push notifications (FCM/APNs).</li>
+        <li>Opcional: WhatsApp Business API para notificaciones críticas — muchos padres revisan WhatsApp más que push.</li>
+      </ul>
+
+      <h3>8.4 · Panel de administración</h3>
+      <p>Recomendado como aplicación web separada consumiendo la misma API — más rápida de iterar, y el dueño/staff probablemente la usará desde una computadora en recepción.</p>
+
+      <h3>8.5 · Assets de marca disponibles</h3>
+      <ul>
+        <li><code>project/assets/shark-logo.png</code> — logo completo, usado en login.</li>
+        <li><code>project/assets/shark-fin.png</code> — aleta, usada como marca de agua decorativa en tarjetas.</li>
+        <li>Tipografías: Outfit (títulos) y Plus Jakarta Sans (cuerpo), vía Google Fonts.</li>
+      </ul>
+    </section>
+
+    <section id="metricas">
+      <div class="sec-head"><span class="num">09</span><h2>Métricas de éxito</h2></div>
+      <ul>
+        <li>% de reservas hechas desde la app vs. por WhatsApp/teléfono — objetivo: mayoría migrada en los primeros 3 meses.</li>
+        <li>% de pagos de membresía procesados dentro de la app.</li>
+        <li>Tasa de retención mensual de clientes activos.</li>
+        <li>Adopción del panel de administración por el equipo de Luis.</li>
+        <li><strong>Cero incidentes de seguridad o fuga de datos</strong> — no negociable dado el tipo de datos (menores, salud).</li>
+      </ul>
+    </section>
+
+    <section id="riesgos">
+      <div class="sec-head"><span class="num">10</span><h2>Riesgos y supuestos</h2></div>
+      <div class="callout risk">
+        <div class="ctitle">Riesgo · Seguridad</div>
+        <p>Subestimar el esfuerzo de 2FA, cifrado y RBAC, siendo el requisito explícito más fuerte del dueño. Mitigación: fase dedicada de auditoría de seguridad antes del lanzamiento.</p>
+      </div>
+      <div class="callout risk">
+        <div class="ctitle">Riesgo · Pagos</div>
+        <p>Falta de una pasarela de pago recurrente confiable y bien soportada en Ecuador. Validar temprano con el proveedor elegido.</p>
+      </div>
+      <div class="callout decision">
+        <div class="ctitle">Supuesto · Sedes</div>
+        <p>Se asume una sola sede/alberca. Si hay planes de expansión, el modelo de datos debe anticiparlo desde el MVP para evitar una reescritura costosa.</p>
+      </div>
+      <div class="callout risk">
+        <div class="ctitle">Riesgo · Diseño pendiente</div>
+        <p>La vista de instructor y el panel de administración no fueron diseñados visualmente, solo sugeridos en la conversación. Se necesita una fase de diseño UI antes de construirlas.</p>
+      </div>
+    </section>
+
+    <section id="preguntas">
+      <div class="sec-head"><span class="num">11</span><h2>Preguntas abiertas</h2></div>
+      <p class="muted">A resolver con el dueño antes de iniciar desarrollo.</p>
+      <ul class="question-list">
+        <li><span class="qnum">01</span><span>¿Cross-platform (React Native/Flutter) o apps nativas separadas? Se recomienda cross-platform.</span></li>
+        <li><span class="qnum">02</span><span>¿Qué pasarela de pago se usará para cobros recurrentes en Ecuador?</span></li>
+        <li><span class="qnum">03</span><span>¿Cuántas clases incluye cada plan de membresía y cuál es la política de cancelación/reprogramación?</span></li>
+        <li><span class="qnum">04</span><span>¿El panel de administración debe ser también app móvil, o basta una versión web para el staff?</span></li>
+        <li><span class="qnum">05</span><span>¿El negocio planea operar en más de una sede/alberca a mediano plazo?</span></li>
+        <li><span class="qnum">06</span><span>¿Se requiere registro/onboarding self-service en el MVP, o las altas las sigue haciendo el equipo de SSC manualmente al inicio?</span></li>
+        <li><span class="qnum">07</span><span>Presupuesto y plazo objetivo de lanzamiento, para dimensionar si el MVP debe reducirse aún más.</span></li>
+        <li><span class="qnum">08</span><span>¿Quién en el equipo de Luis necesita acceso de administrador vs. solo consulta (recepción, coaches, el propio dueño)?</span></li>
+      </ul>
+    </section>
+
+    <section id="anexo">
+      <div class="sec-head"><span class="num">12</span><h2>Anexo · Inventario de pantallas</h2></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Pantalla</th><th>Rol</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>01</td><td>Acceso seguro (login)</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>02</td><td>Inicio</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>03</td><td>Reservar clase</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>04</td><td>Horario semanal</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>05</td><td>Progreso y niveles</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>06</td><td>Pagos y membresía</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>07</td><td>Mensajería</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>08</td><td>Notificaciones y avisos</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>09</td><td>Perfil y seguridad</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-done">Diseñado</span></td></tr>
+            <tr><td>—</td><td>Registro / onboarding</td><td><span class="pill pill-cliente">Cliente</span></td><td><span class="pill pill-todo">Sugerido, sin diseño</span></td></tr>
+            <tr><td>—</td><td>Vista de instructor (agenda, asistencia)</td><td><span class="pill pill-instructor">Instructor</span></td><td><span class="pill pill-todo">Sugerido, sin diseño</span></td></tr>
+            <tr><td>—</td><td>Panel de administración</td><td><span class="pill pill-admin">Administrador</span></td><td><span class="pill pill-todo">Prototipo parcial (editor de marca)</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
