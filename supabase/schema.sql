@@ -8,6 +8,9 @@ create extension if not exists "pgcrypto";
 create table if not exists profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   client_name text not null default '',
+  -- 'cliente' (padre/alumno), 'instructor' (coach) o 'admin' (dueño / contadora).
+  -- Solo se cambia desde el panel de administración, nunca desde la app del cliente.
+  role text not null default 'cliente' check (role in ('cliente', 'instructor', 'admin')),
   accent text not null default '#FF6A3D',
   two_factor_enabled boolean not null default true,
   biometric_enabled boolean not null default true,

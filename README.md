@@ -26,6 +26,12 @@ The design medium is **HTML/CSS/JS** — these are prototypes, not production co
 - `PRD.md` — product requirements document for building this design as a real native app for Android and iOS (roles, scope, security requirements, proposed architecture, open questions)
 - `PRD.html` — the same PRD, laid out for reading/sharing — published version: https://claude.ai/code/artifact/1c11fd1e-65cd-40ab-ae02-eef2333f86de
 
+## Code
+
+- **Root (`src/`, `index.html`, `vite.config.js`)** — interactive React web version of the design, deployed to Vercel as a shareable demo.
+- **`mobile/`** — the real Android/iOS app (Expo / React Native). See `mobile/README.md`.
+- **`supabase/schema.sql`** — the shared backend schema (Postgres + Row Level Security) used by both.
+
 ## Status
 
 The visual design (9 screens + brand editor) is done. The PRD above turns it into a real build plan, but development hasn't started — see `PRD.md` section 11 ("Preguntas abiertas") for the decisions still needed from the business owner before implementation begins.
