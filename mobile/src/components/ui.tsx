@@ -3,8 +3,8 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { Pressable, ScrollView, StyleSheet, Text, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useAppState } from '@/context/AppState';
 import { body, colors, head, radius } from '@/constants/theme';
+import { useData } from '@/store/DataProvider';
 
 // ---------- layout ----------
 
@@ -126,9 +126,9 @@ export function PrimaryButton({ label, onPress, disabled, style }: BtnProps) {
 }
 
 export function AccentButton({ label, onPress, disabled, style }: BtnProps) {
-  const { profile } = useAppState();
+  const { db } = useData();
   return (
-    <Pressable onPress={onPress} disabled={disabled} style={({ pressed }) => [styles.btn, { backgroundColor: profile.accent }, style, (pressed || disabled) && { opacity: 0.7 }]}>
+    <Pressable onPress={onPress} disabled={disabled} style={({ pressed }) => [styles.btn, { backgroundColor: db.settings.accent }, style, (pressed || disabled) && { opacity: 0.7 }]}>
       <Text style={[head(700), styles.btnText]}>{label}</Text>
     </Pressable>
   );

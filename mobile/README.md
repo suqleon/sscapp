@@ -9,11 +9,16 @@ Comparte el backend de Supabase definido en `../supabase/schema.sql` con la app 
 src/app/            rutas (Expo Router: cada archivo es una pantalla)
   _layout.tsx       carga de fuentes, sesión y guardas de autenticación
   login.tsx         iniciar sesión / crear cuenta / huella
-  (tabs)/           pestañas: Inicio, Reservar, Progreso, Mensajes, Perfil
-                    + Horario, Pagos, Avisos (accesibles desde Inicio)
-src/components/     UI compartida (botones, tarjetas, toast, editor del dueño)
-src/context/        estado global: sesión, perfil, modo demo
-src/data/           datos de ejemplo (modo demo)
+  (tabs)/           cliente: index (Inicio), reservar, progreso, mensajes,
+                    horario, pagos, avisos, perfil
+  (tabs)/equipo/    equipo: resumen del día, exportar CSV, planes y profesores
+  (tabs)/clases/    clases: lista, [id] (crear/editar), asistencia/[id]
+  (tabs)/alumnos/   alumnos: lista, [id] (ficha completa)
+  (tabs)/cobros/    pagos (solo dueño/contadora): resumen, nuevo
+src/components/     UI compartida (ui.tsx), formularios (form.tsx), panel Ajustes
+src/context/        sesión / autenticación (AppState)
+src/store/          datos del negocio: tipos, seed, DataProvider (CRUD +
+                    persistencia en AsyncStorage), selectors, csv (exportar)
 src/lib/supabase.ts cliente del backend
 ```
 

@@ -13,9 +13,22 @@ construido, cómo probarlo en tu celular y qué falta para que sea la app real.
 | **App móvil** | **La app real para Android e iPhone (Expo / React Native)** | `mobile/` |
 | Base de datos | Estructura del backend (tablas, seguridad por fila) | `supabase/schema.sql` |
 
-La app móvil hoy corre en **modo demostración**: se ve y se usa como la app
-final, pero los datos son de ejemplo y el login es simulado. Al conectar
-Supabase (abajo) pasa a modo real sin cambiar el código.
+La app móvil tiene **dos partes** y ya es operativa con datos guardados en el
+propio dispositivo (al conectar Supabase, abajo, esos datos pasan a compartirse
+entre todos los celulares del club):
+
+- **Cliente** (padres / alumnos): Inicio, Reservar, Horario, Progreso, Pagos, Mensajes, Avisos, Perfil.
+- **Equipo** (profesores, dueño, contadora): resumen del día, **Clases** (crear /
+  editar / pase de lista), **Alumnos** (ficha completa: nivel, plan, habilidades,
+  insignias, datos médicos), **Pagos** (registrar cobros, ver pendientes del mes),
+  planes/precios/profesores y **Exportar a Excel** (alumnos, pagos, asistencia, clases).
+
+Para cambiar entre las dos partes desde tu celular: botón **Ajustes** (arriba a la
+derecha) → *Ver la app como* → Cliente / Profesor / Dueño. Ahí también eliges qué
+alumno ve el cliente, el color de la marca y el nombre del club.
+
+Viene con alumnos, clases y pagos de ejemplo para que pruebes; bórralos con
+**Ajustes → Restablecer datos de ejemplo** cuando quieras cargar los reales.
 
 ## Cómo probar la app en tu celular Android (sin programar)
 

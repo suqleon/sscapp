@@ -4,15 +4,30 @@ import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput,
 
 import { Avatar, Divider, Screen, ScreenHeader, Txt } from '@/components/ui';
 import { body, colors, head } from '@/constants/theme';
-import { useAppState } from '@/context/AppState';
-import { getConversations } from '@/data/mockData';
+import { useData } from '@/store/DataProvider';
+import { currentStudent } from '@/store/selectors';
+
+type Msg = { from: 'me' | 'them'; text: string };
+type Conversation = { id: string; name: string; time: string; preview: string; unread: number; color: string; initial?: string; icon?: 'users' | 'home' | 'inbox'; thread: Msg[] };
 
 export default function MessagesScreen() {
-  const { profile } = useAppState();
-  const conversations = getConversations(profile);
+  const { db } = useData();
+  const accent = db.settings.accent;
+  const st = currentStudent(db);
+  const coach = db.coaches[0];
+  const swimmer = st?.name ?? 'tu nadador';
+
+  // Mensajería en tiempo real llega con el backend (Supabase Realtime). Por ahora el hilo es local.
+  const conversations: Conversation[] = [
+    { id: 'coach', name: `Coach ${coach?.name ?? 'Diana'}`, time: '10:24', preview: `¡${swimmer} avanzó mucho en crol hoy! 👏`, unread: 2, color: '#FF8A65', initial: (coach?.name ?? 'D').charAt(0), thread: [{ from: 'them', text: `${swimmer} avanzó mucho en crol hoy 👏` }, { from: 'them', text: 'Ya está listo para la evaluación del jueves.' }] },
+    { id: 'recepcion', name: `Recepción ${db.settings.clubName.split(' ')[0]}`, time: 'Ayer', preview: 'Tu pago fue recibido ✅', unread: 0, color: '#0073CC', icon: 'inbox', thread: [{ from: 'them', text: 'Tu pago fue recibido. ¡Gracias!' }] },
+    { id: 'grupo', name: `Grupo ${st?.level ?? 'Tiburones'}`, time: 'Lun', preview: 'Recuerden traer gorra y goggles', unread: 0, color: '#18B57A', icon: 'users', thread: [{ from: 'them', text: 'Recuerden traer gorra y goggles' }] },
+    { id: 'admin', name: 'Administración', time: '12 jun', preview: 'Horario especial por mantenimiento', unread: 0, color: '#6F4AE0', icon: 'home', thread: [{ from: 'them', text: 'Horario especial por mantenimiento esta semana.' }] },
+  ];
+
   const [openId, setOpenId] = useState<string | null>(null);
   const [draft, setDraft] = useState('');
-  const [extra, setExtra] = useState<Record<string, { from: 'me' | 'them'; text: string }[]>>({});
+  const [extra, setExtra] = useState<Record<string, Msg[]>>({});
   const open = conversations.find((c) => c.id === openId);
 
   function send() {
@@ -38,7 +53,7 @@ export default function MessagesScreen() {
             <View style={styles.inputWrap}>
               <TextInput value={draft} onChangeText={setDraft} onSubmitEditing={send} placeholder="Escribe un mensaje…" placeholderTextColor={colors.faint} style={styles.input} returnKeyType="send" />
             </View>
-            <Pressable onPress={send} style={[styles.send, { backgroundColor: profile.accent }]} accessibilityLabel="Enviar">
+            <Pressable onPress={send} style={[styles.send, { backgroundColor: accent }]} accessibilityLabel="Enviar">
               <Feather name="send" size={19} color="#fff" />
             </Pressable>
           </View>
@@ -49,19 +64,11 @@ export default function MessagesScreen() {
 
   return (
     <Screen>
-      <ScreenHeader
-        title="Mensajes"
-        right={
-          <View style={[styles.newBtn, { backgroundColor: profile.accent }]}>
-            <Feather name="plus" size={20} color="#fff" />
-          </View>
-        }
-      />
+      <ScreenHeader title="Mensajes" right={<View style={[styles.newBtn, { backgroundColor: accent }]}><Feather name="plus" size={20} color="#fff" /></View>} />
       <View style={styles.search}>
         <Feather name="search" size={18} color={colors.faint} />
         <Txt size={13.5} color={colors.faint}>Buscar conversación</Txt>
       </View>
-
       {conversations.map((c, i) => (
         <View key={c.id}>
           <Pressable onPress={() => setOpenId(c.id)} style={({ pressed }) => [styles.row, pressed && { opacity: 0.7 }]}>
@@ -69,7 +76,7 @@ export default function MessagesScreen() {
               <Avatar initial={c.initial} colorsPair={[c.color, c.color]} size={50} rounded={25} />
             ) : (
               <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: c.color, alignItems: 'center', justifyContent: 'center' }}>
-                <Feather name={c.id === 'grupo' ? 'users' : c.id === 'admin' ? 'home' : 'inbox'} size={22} color="#fff" />
+                <Feather name={c.icon ?? 'inbox'} size={22} color="#fff" />
               </View>
             )}
             <View style={{ flex: 1, minWidth: 0 }}>
@@ -79,11 +86,7 @@ export default function MessagesScreen() {
               </View>
               <Txt size={12.5} color={colors.muted} numberOfLines={1} style={{ marginTop: 3 }}>{c.preview}</Txt>
             </View>
-            {c.unread > 0 && (
-              <View style={[styles.unread, { backgroundColor: profile.accent }]}>
-                <Txt size={11} w={700} color="#fff">{c.unread}</Txt>
-              </View>
-            )}
+            {c.unread > 0 && <View style={[styles.unread, { backgroundColor: accent }]}><Txt size={11} w={700} color="#fff">{c.unread}</Txt></View>}
           </Pressable>
           {i < conversations.length - 1 && <Divider inset={63} />}
         </View>

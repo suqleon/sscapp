@@ -6,9 +6,12 @@ import { Image, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, Tex
 import { OutlineButton, PrimaryButton, Screen, Txt, useToast } from '@/components/ui';
 import { body, colors, head } from '@/constants/theme';
 import { useAppState } from '@/context/AppState';
+import { useData } from '@/store/DataProvider';
 
 export default function LoginScreen() {
-  const { signIn, signUp, demoLogin, demoMode, profile } = useAppState();
+  const { signIn, signUp, demoLogin, demoMode } = useAppState();
+  const { db } = useData();
+  const profile = { accent: db.settings.accent };
   const showToast = useToast();
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState(demoMode ? 'ana.torres@email.com' : '');

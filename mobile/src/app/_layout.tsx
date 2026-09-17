@@ -17,12 +17,14 @@ import OwnerEditor from '@/components/OwnerEditor';
 import { ToastProvider } from '@/components/ui';
 import { colors } from '@/constants/theme';
 import { AppStateProvider, useAppState } from '@/context/AppState';
+import { DataProvider, useData } from '@/store/DataProvider';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function RootNavigator({ fontsReady }: { fontsReady: boolean }) {
   const { ready, isAuthed } = useAppState();
-  const canRender = fontsReady && ready;
+  const { ready: dataReady } = useData();
+  const canRender = fontsReady && ready && dataReady;
 
   useEffect(() => {
     if (canRender) SplashScreen.hideAsync().catch(() => {});
@@ -61,9 +63,11 @@ export default function RootLayout() {
 
   return (
     <AppStateProvider>
-      <ToastProvider>
-        <RootNavigator fontsReady={fontsLoaded || Boolean(fontError)} />
-      </ToastProvider>
+      <DataProvider>
+        <ToastProvider>
+          <RootNavigator fontsReady={fontsLoaded || Boolean(fontError)} />
+        </ToastProvider>
+      </DataProvider>
     </AppStateProvider>
   );
 }
